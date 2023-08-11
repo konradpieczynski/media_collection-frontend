@@ -31,6 +31,9 @@ public class WelcomePage extends VerticalLayout {
                 LumoUtility.Margin.MEDIUM);
         Div div = new Div();
         Paragraph paragraph = new Paragraph("Current statistics:");
+        header1.addClassNames(
+                LumoUtility.FontSize.MEDIUM,
+                LumoUtility.Margin.MEDIUM);
         content.add(header1,div,paragraph);
         add(content);
     }

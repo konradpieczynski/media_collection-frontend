@@ -1,5 +1,6 @@
 package com.media_collection.frontend.views;
 
+import com.media_collection.frontend.views.lists.UsersView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.H1;
@@ -31,7 +32,8 @@ public class MainLayout extends AppLayout {
 
     private void createDrawer() {
         addToDrawer(new VerticalLayout(
-                new RouterLink("Welcome page", WelcomePage.class)
+                new RouterLink("Welcome page", WelcomePage.class),
+                new RouterLink("Users list", UsersView.class)
         ));
     }
 }
