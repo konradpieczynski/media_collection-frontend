@@ -51,9 +51,9 @@ public class UsersView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("user-grid");
         grid.setSizeFull();
-        grid.addColumn(User::getUserId).setHeader("User id");
-        grid.addColumn(User::getUserName).setHeader("User id");
-        grid.addColumn(user -> user.getSuggestions().getType()).setHeader("Suggestions type");
+        grid.addColumn(User::getUserId).setHeader("User id").setSortable(true);
+        grid.addColumn(User::getUserName).setHeader("User name").setSortable(true);
+        grid.addColumn(user -> user.getSuggestions().getType()).setHeader("Suggestions type").setSortable(true);
         grid.addColumn(user -> user.getSuggestions().getSuggestions()).setHeader("Suggestions");
         grid.addColumn(User::getSongCollectionList).setHeader("Song collections");
         grid.addColumn(User::getMovieCollectionList).setHeader("Movie collections");
