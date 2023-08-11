@@ -4,10 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class MovieCollection {
-    int movieCollectionId;
-    String movieCollectionName;
+    private Long movieCollectionId;
+    private Long userId;
+    private String movieCollectionName;
+    private Set<Long> movies = new HashSet<>();
 }

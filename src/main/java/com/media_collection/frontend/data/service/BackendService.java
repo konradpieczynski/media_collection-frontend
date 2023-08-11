@@ -4,11 +4,12 @@ import com.media_collection.frontend.data.domain.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Component
 public class BackendService {
-    List<User> users = new ArrayList<>(List.of(new User(1,"Test user")));
+    List<User> users = new ArrayList<>(List.of(new User(1L,"Test user",new Suggestions("movies",new HashSet<>()),new HashSet<>(),new HashSet<>())));
     public List<User> findAllUsers(String value) {
         return users;
     }
@@ -20,7 +21,7 @@ public class BackendService {
     {
         users.remove(user);
     }
-    List<Song> songs = new ArrayList<>(List.of(new Song(1,"Test song")));
+    List<Song> songs = new ArrayList<>(List.of(new Song(1L,"Test song","test author", new HashSet<>())));
     public List<Song> findAllSongs(String value) {
         return songs;
     }
@@ -32,7 +33,7 @@ public class BackendService {
     {
         songs.remove(song);
     }
-    List<SongCollection> songCollections = new ArrayList<>(List.of(new SongCollection(1,"Test songCollection")));
+    List<SongCollection> songCollections = new ArrayList<>(List.of(new SongCollection(1L,1L,"Test song collection",new HashSet<>())));
     public List<SongCollection> findAllSongCollections(String value) {
         return songCollections;
     }
@@ -44,7 +45,7 @@ public class BackendService {
     {
         songCollections.remove(songCollection);
     }
-    List<Movie> movies = new ArrayList<>(List.of(new Movie(1,"Test movie")));
+    List<Movie> movies = new ArrayList<>(List.of(new Movie(1L,"Test movie",1999, new HashSet<>())));
     public List<Movie> findAllMovies(String value) {
         return movies;
     }
@@ -56,7 +57,7 @@ public class BackendService {
     {
         movies.remove(movie);
     }
-    List<MovieCollection> movieCollections = new ArrayList<>(List.of(new MovieCollection(1,"Test movieCollection")));
+    List<MovieCollection> movieCollections = new ArrayList<>(List.of(new MovieCollection(1L,1L,"Test movie collection",new HashSet<>())));
     public List<MovieCollection> findAllMovieCollections(String value) {
         return movieCollections;
     }

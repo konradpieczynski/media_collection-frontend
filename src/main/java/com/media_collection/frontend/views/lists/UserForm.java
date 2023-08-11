@@ -20,6 +20,7 @@ public class UserForm extends FormLayout {
 
     TextField userId = new TextField("User id");
     TextField userName = new TextField("User Name");
+    TextField suggestions = new TextField("Suggestions: ");
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button close = new Button("Cancel");
