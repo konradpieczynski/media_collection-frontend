@@ -19,7 +19,8 @@ import java.util.List;
 public class SongForm extends FormLayout {
 
     TextField songId = new TextField("Song id");
-    TextField songName = new TextField("Song Name");
+    TextField songTitle = new TextField("Song title");
+    TextField songAuthor = new TextField("Artist");
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button close = new Button("Cancel");
@@ -29,7 +30,7 @@ public class SongForm extends FormLayout {
         addClassName("song-form");
         binder.bindInstanceFields(this);
         songId.setReadOnly(true);
-        add(songId, songName, createButtonsLayout());
+        add(songId, songTitle, songAuthor, createButtonsLayout());
     }
 
     public void setSong(Song song) {

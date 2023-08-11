@@ -13,7 +13,7 @@ import java.util.Set;
 public class User {
     private Long userId;
     private String userName;
-    private Suggestions suggestions;
+    private Suggestions suggestions = new Suggestions();
     private Set<Long> movieCollectionList = new HashSet<>();
     private Set<Long> songCollectionList = new HashSet<>();
 }

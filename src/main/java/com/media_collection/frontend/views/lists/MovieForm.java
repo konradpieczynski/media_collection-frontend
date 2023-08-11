@@ -9,6 +9,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
@@ -19,7 +20,8 @@ import java.util.List;
 public class MovieForm extends FormLayout {
 
     TextField movieId = new TextField("Movie id");
-    TextField movieName = new TextField("Movie name");
+    TextField movieTitle = new TextField("Movie name");
+    IntegerField movieYear = new IntegerField("Release date");
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button close = new Button("Cancel");
@@ -29,7 +31,7 @@ public class MovieForm extends FormLayout {
         addClassName("movie-form");
         binder.bindInstanceFields(this);
         movieId.setReadOnly(true);
-        add(movieId, movieName, createButtonsLayout());
+        add(movieId, movieTitle, movieYear, createButtonsLayout());
     }
 
     public void setMovie(Movie movie) {

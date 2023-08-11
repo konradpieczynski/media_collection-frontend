@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @PageTitle("Movies List")
 @Component
 public class MoviesView extends VerticalLayout {
-    Grid<Movie> grid = new Grid<>(Movie.class);
+    Grid<Movie> grid = new Grid<>();
     TextField filterText = new TextField();
     MovieForm form;
     private final BackendService service;
@@ -51,6 +51,10 @@ public class MoviesView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("movie-grid");
         grid.setSizeFull();
+        grid.addColumn(Movie::getMovieId).setHeader("Movie id");
+        grid.addColumn(Movie::getMovieTitle).setHeader("Title");
+        grid.addColumn(Movie::getMovieYear).setHeader("Release date");
+        grid.addColumn(Movie::getMovieCollections).setHeader("User collections");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
                 editMovie(event.getValue()));

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @PageTitle("Song Collections List")
 @Component
 public class SongCollectionsView extends VerticalLayout {
-    Grid<SongCollection> grid = new Grid<>(SongCollection.class);
+    Grid<SongCollection> grid = new Grid<>();
     TextField filterText = new TextField();
     SongCollectionForm form;
     private final BackendService service;
@@ -51,6 +51,10 @@ public class SongCollectionsView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("songCollection-grid");
         grid.setSizeFull();
+        grid.addColumn(SongCollection::getSongCollectionId).setHeader("Song collection id");
+        grid.addColumn(SongCollection::getUserId).setHeader("User id");
+        grid.addColumn(SongCollection::getSongCollectionName).setHeader("Song collection name");
+        grid.addColumn(SongCollection::getSongs).setHeader("Songs in collection");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
                 editSongCollection(event.getValue()));

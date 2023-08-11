@@ -19,6 +19,7 @@ import java.util.List;
 public class MovieCollectionForm extends FormLayout {
 
     TextField movieCollectionId = new TextField("Movie collection id");
+    TextField userId = new TextField("User id");
     TextField movieCollectionName = new TextField("Movie collection name");
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -29,7 +30,7 @@ public class MovieCollectionForm extends FormLayout {
         addClassName("movieCollection-form");
         binder.bindInstanceFields(this);
         movieCollectionId.setReadOnly(true);
-        add(movieCollectionId, movieCollectionName, createButtonsLayout());
+        add(movieCollectionId, userId, movieCollectionName, createButtonsLayout());
     }
 
     public void setMovieCollection(MovieCollection movieCollection) {

@@ -7,6 +7,7 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -14,23 +15,28 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserForm extends FormLayout {
 
     TextField userId = new TextField("User id");
     TextField userName = new TextField("User Name");
-    TextField suggestions = new TextField("Suggestions: ");
+    ComboBox<String> type = new ComboBox<>("Suggestion type");
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button close = new Button("Cancel");
     Binder<User> binder = new BeanValidationBinder<>(User.class);
 
+
     public UserForm(List<User> users) {
         addClassName("user-form");
+        binder.forField(type).bind(b -> b.getSuggestions().getType(), (b, v) -> b.getSuggestions().setType(v));
         binder.bindInstanceFields(this);
         userId.setReadOnly(true);
-        add(userId, userName, createButtonsLayout());
+        List<String> suggestionSet = new ArrayList<>(List.of("movies","songs"));
+        type.setItems(suggestionSet);
+        add(userId, userName, type, createButtonsLayout());
     }
 
     public void setUser(User user) {

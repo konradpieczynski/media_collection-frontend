@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @PageTitle("Users List")
 @Component
 public class UsersView extends VerticalLayout {
-    Grid<User> grid = new Grid<>(User.class);
+    Grid<User> grid = new Grid<>();
     TextField filterText = new TextField();
     UserForm form;
     private final BackendService service;
@@ -51,6 +51,12 @@ public class UsersView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("user-grid");
         grid.setSizeFull();
+        grid.addColumn(User::getUserId).setHeader("User id");
+        grid.addColumn(User::getUserName).setHeader("User id");
+        grid.addColumn(user -> user.getSuggestions().getType()).setHeader("Suggestions type");
+        grid.addColumn(user -> user.getSuggestions().getSuggestions()).setHeader("Suggestions");
+        grid.addColumn(User::getSongCollectionList).setHeader("Song collections");
+        grid.addColumn(User::getMovieCollectionList).setHeader("Movie collections");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
                 editUser(event.getValue()));

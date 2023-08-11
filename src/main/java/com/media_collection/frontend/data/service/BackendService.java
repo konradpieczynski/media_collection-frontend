@@ -15,6 +15,7 @@ public class BackendService {
     }
     public void saveUser(User user)
     {
+        System.out.println(user);
         users.add(user);
     }
     public void deleteUser(User user)

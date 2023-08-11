@@ -14,5 +14,5 @@ public class Movie {
     private Long movieId;
     private String movieTitle;
     private int movieYear;
-    private Set<Long> movieCollectionList = new HashSet<>();
+    private Set<Long> movieCollections = new HashSet<>();
 }
