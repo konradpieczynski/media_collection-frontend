@@ -2,6 +2,7 @@ package com.media_collection.frontend.data.service;
 
 import com.media_collection.frontend.config.BackendConfig;
 import com.media_collection.frontend.data.domain.*;
+import lombok.Getter;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -14,10 +15,15 @@ import java.util.List;
 public class BackendService {
     final BackendConfig backendConfig;
     WebClient webClient = WebClient.create();
+    @Getter
     List<User> userCache = new ArrayList<>();
+    @Getter
     List<Song> songCache = new ArrayList<>();
+    @Getter
     List<SongCollection> songCollectionCache = new ArrayList<>();
+    @Getter
     List<Movie> movieCache = new ArrayList<>();
+    @Getter
     List<MovieCollection> movieCollectionCache = new ArrayList<>();
 
     public BackendService(BackendConfig backendConfig) {

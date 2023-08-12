@@ -1,6 +1,6 @@
 package com.media_collection.frontend.views;
 
-import com.vaadin.flow.component.html.Div;
+import com.media_collection.frontend.data.service.BackendService;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -13,11 +13,15 @@ import org.springframework.stereotype.Component;
 @PageTitle("Welcome page")
 @Component
 public class WelcomePage extends VerticalLayout {
-    public WelcomePage() {
+    final BackendService backendService;
+
+    public WelcomePage(BackendService backendService) {
+        this.backendService = backendService;
         addClassName("list-view");
         setSizeFull();
         createPage();
     }
+
     private void createPage() {
         VerticalLayout content = new VerticalLayout();
         content.setDefaultHorizontalComponentAlignment(Alignment.START);
@@ -29,12 +33,23 @@ public class WelcomePage extends VerticalLayout {
         header1.addClassNames(
                 LumoUtility.FontSize.LARGE,
                 LumoUtility.Margin.MEDIUM);
-        Div div = new Div();
-        Paragraph paragraph = new Paragraph("Current statistics:");
-        header1.addClassNames(
+        Paragraph paragraph = getParagraph();
+        content.add(header1, paragraph);
+        add(content);
+    }
+
+    private Paragraph getParagraph() {
+        Paragraph paragraph = new Paragraph();
+        Paragraph paragraph1 = new Paragraph("Current statistics:");
+        Paragraph paragraph2 = new Paragraph("Users: " + backendService.getUserCache().size());
+        Paragraph paragraph3 = new Paragraph("Songs: " + backendService.getSongCache().size());
+        Paragraph paragraph4 = new Paragraph("Song collections: " + backendService.getSongCollectionCache().size());
+        Paragraph paragraph5 = new Paragraph("Movies: " + backendService.getMovieCache().size());
+        Paragraph paragraph6 = new Paragraph("Movie collections: " + backendService.getMovieCollectionCache().size());
+        paragraph.add(paragraph1, paragraph2, paragraph2, paragraph3, paragraph4, paragraph5, paragraph6);
+        paragraph.addClassNames(
                 LumoUtility.FontSize.MEDIUM,
                 LumoUtility.Margin.MEDIUM);
-        content.add(header1,div,paragraph);
-        add(content);
+        return paragraph;
     }
 }
