@@ -54,7 +54,7 @@ public class UsersView extends VerticalLayout {
         grid.addColumn(User::getUserId).setHeader("User id").setSortable(true);
         grid.addColumn(User::getUserName).setHeader("User name").setSortable(true);
         grid.addColumn(user -> user.getSuggestions().getType()).setHeader("Suggestions type").setSortable(true);
-        grid.addColumn(user -> user.getSuggestions().getSuggestions()).setHeader("Suggestions");
+        grid.addColumn(User::getSuggestions).setHeader("Suggested");
         grid.addColumn(User::getSongCollectionList).setHeader("Song collections");
         grid.addColumn(User::getMovieCollectionList).setHeader("Movie collections");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
@@ -63,7 +63,7 @@ public class UsersView extends VerticalLayout {
     }
 
     private com.vaadin.flow.component.Component getToolbar() {
-        filterText.setPlaceholder("Filter by name...");
+        filterText.setPlaceholder("Filter by user name...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());

@@ -61,7 +61,7 @@ public class MovieCollectionsView extends VerticalLayout {
     }
 
     private com.vaadin.flow.component.Component getToolbar() {
-        filterText.setPlaceholder("Filter by name...");
+        filterText.setPlaceholder("Filter by collection name...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());

@@ -1,73 +1,269 @@
 package com.media_collection.frontend.data.service;
 
+import com.media_collection.frontend.config.BackendConfig;
 import com.media_collection.frontend.data.domain.*;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 @Component
 public class BackendService {
-    List<User> users = new ArrayList<>(List.of(new User(1L,"Test user",new Suggestions("movies",new HashSet<>()),new HashSet<>(),new HashSet<>())));
+    final BackendConfig backendConfig;
+    WebClient webClient = WebClient.create();
+    List<User> userCache = new ArrayList<>();
+    List<Song> songCache = new ArrayList<>();
+    List<SongCollection> songCollectionCache = new ArrayList<>();
+    List<Movie> movieCache = new ArrayList<>();
+    List<MovieCollection> movieCollectionCache = new ArrayList<>();
+
+    public BackendService(BackendConfig backendConfig) {
+        this.backendConfig = backendConfig;
+        updateCache();
+    }
+    public void updateCache(){
+        this.userCache = getUsers();
+        this.songCache = getSongs();
+        this.songCollectionCache = getSongCollections();
+        this.movieCache = getMovies();
+        this.movieCollectionCache = getMovieCollections();
+    }
+    public List<User> getUsers() {
+        return webClient.get()
+                .uri(backendConfig.backendUrl + "/users")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(User.class)
+                .collectList()
+                .block();
+    }
+
     public List<User> findAllUsers(String value) {
-        return users;
+        List<User> users = userCache;
+        return users.stream().filter(n -> n.getUserName().toLowerCase().contains(value.toLowerCase())).toList();
     }
     public void saveUser(User user)
     {
-        System.out.println(user);
-        users.add(user);
+        if (user.getUserId() == null) {
+            webClient.put()
+                    .uri(backendConfig.backendUrl + "/users")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(user)
+                    .retrieve()
+                    .bodyToMono(Void.class)
+                    .block();
+        }
+        else {
+            webClient.post()
+                    .uri(backendConfig.backendUrl + "/users")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(user)
+                    .retrieve()
+                    .bodyToMono(Void.class)
+                    .block();
+        }
+        updateCache();
     }
     public void deleteUser(User user)
     {
-        users.remove(user);
+        webClient.method(HttpMethod.DELETE)
+                .uri(backendConfig.backendUrl + "/users/" +user.getUserId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(user)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
+        updateCache();
     }
-    List<Song> songs = new ArrayList<>(List.of(new Song(1L,"Test song","test author", new HashSet<>())));
+    public List<Song> getSongs() {
+        return webClient.get()
+                .uri(backendConfig.backendUrl + "/songs")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(Song.class)
+                .collectList()
+                .block();
+    }
+
     public List<Song> findAllSongs(String value) {
-        return songs;
+        List<Song> songs = getSongs();
+        return songs.stream().filter(n -> n.getSongTitle().toLowerCase().contains(value.toLowerCase())).toList();
     }
     public void saveSong(Song song)
     {
-        songs.add(song);
+        if (song.getSongId() == null) {
+            webClient.put()
+                    .uri(backendConfig.backendUrl + "/songs")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(song)
+                    .retrieve()
+                    .bodyToMono(Void.class)
+                    .block();
+        }
+        else {
+            webClient.post()
+                    .uri(backendConfig.backendUrl + "/songs")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(song)
+                    .retrieve()
+                    .bodyToMono(Void.class)
+                    .block();
+        }
+        updateCache();
     }
     public void deleteSong(Song song)
     {
-        songs.remove(song);
+        webClient.method(HttpMethod.DELETE)
+                .uri(backendConfig.backendUrl + "/songs/" +song.getSongId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(song)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
+        updateCache();
     }
-    List<SongCollection> songCollections = new ArrayList<>(List.of(new SongCollection(1L,1L,"Test song collection",new HashSet<>())));
-    public List<SongCollection> findAllSongCollections(String value) {
-        return songCollections;
+    public List<Movie> getMovies() {
+        return webClient.get()
+                .uri(backendConfig.backendUrl + "/movies")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(Movie.class)
+                .collectList()
+                .block();
     }
-    public void saveSongCollection(SongCollection songCollection)
-    {
-        songCollections.add(songCollection);
-    }
-    public void deleteSongCollection(SongCollection songCollection)
-    {
-        songCollections.remove(songCollection);
-    }
-    List<Movie> movies = new ArrayList<>(List.of(new Movie(1L,"Test movie",1999, new HashSet<>())));
+
     public List<Movie> findAllMovies(String value) {
-        return movies;
+        List<Movie> movies = getMovies();
+        return movies.stream().filter(n -> n.getMovieTitle().toLowerCase().contains(value.toLowerCase())).toList();
     }
     public void saveMovie(Movie movie)
     {
-        movies.add(movie);
+        if (movie.getMovieId() == null) {
+            webClient.put()
+                    .uri(backendConfig.backendUrl + "/movies")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(movie)
+                    .retrieve()
+                    .bodyToMono(Void.class)
+                    .block();
+        }
+        else {
+            webClient.post()
+                    .uri(backendConfig.backendUrl + "/movies")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(movie)
+                    .retrieve()
+                    .bodyToMono(Void.class)
+                    .block();
+        }
+        updateCache();
     }
     public void deleteMovie(Movie movie)
     {
-        movies.remove(movie);
+        webClient.method(HttpMethod.DELETE)
+                .uri(backendConfig.backendUrl + "/movies/" +movie.getMovieId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(movie)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
+        updateCache();
     }
-    List<MovieCollection> movieCollections = new ArrayList<>(List.of(new MovieCollection(1L,1L,"Test movie collection",new HashSet<>())));
+    public List<SongCollection> getSongCollections() {
+        return webClient.get()
+                .uri(backendConfig.backendUrl + "/songCollections")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(SongCollection.class)
+                .collectList()
+                .block();
+    }
+
+    public List<SongCollection> findAllSongCollections(String value) {
+        List<SongCollection> songCollections = getSongCollections();
+        return songCollections.stream().filter(n -> n.getSongCollectionName().toLowerCase().contains(value.toLowerCase())).toList();
+    }
+    public void saveSongCollection(SongCollection songCollection)
+    {
+        if (songCollection.getSongCollectionId() == null) {
+            webClient.put()
+                    .uri(backendConfig.backendUrl + "/songCollections")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(songCollection)
+                    .retrieve()
+                    .bodyToMono(Void.class)
+                    .block();
+        }
+        else {
+            webClient.post()
+                    .uri(backendConfig.backendUrl + "/songCollections")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(songCollection)
+                    .retrieve()
+                    .bodyToMono(Void.class)
+                    .block();
+        }
+        updateCache();
+    }
+    public void deleteSongCollection(SongCollection songCollection)
+    {
+        webClient.method(HttpMethod.DELETE)
+                .uri(backendConfig.backendUrl + "/songCollections/" +songCollection.getSongCollectionId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(songCollection)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
+        updateCache();
+    }
+    public List<MovieCollection> getMovieCollections() {
+        return webClient.get()
+                .uri(backendConfig.backendUrl + "/movieCollections")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(MovieCollection.class)
+                .collectList()
+                .block();
+    }
+
     public List<MovieCollection> findAllMovieCollections(String value) {
-        return movieCollections;
+        List<MovieCollection> movieCollections = getMovieCollections();
+        return movieCollections.stream().filter(n -> n.getMovieCollectionName().toLowerCase().contains(value.toLowerCase())).toList();
     }
     public void saveMovieCollection(MovieCollection movieCollection)
     {
-        movieCollections.add(movieCollection);
+        if (movieCollection.getMovieCollectionId() == null) {
+            webClient.put()
+                    .uri(backendConfig.backendUrl + "/movieCollections")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(movieCollection)
+                    .retrieve()
+                    .bodyToMono(Void.class)
+                    .block();
+        }
+        else {
+            webClient.post()
+                    .uri(backendConfig.backendUrl + "/movieCollections")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(movieCollection)
+                    .retrieve()
+                    .bodyToMono(Void.class)
+                    .block();
+        }
+        updateCache();
     }
     public void deleteMovieCollection(MovieCollection movieCollection)
     {
-        movieCollections.remove(movieCollection);
+        webClient.method(HttpMethod.DELETE)
+                .uri(backendConfig.backendUrl + "/movieCollections/" +movieCollection.getMovieCollectionId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(movieCollection)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
+        updateCache();
     }
 }

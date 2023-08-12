@@ -54,14 +54,14 @@ public class MoviesView extends VerticalLayout {
         grid.addColumn(Movie::getMovieId).setHeader("Movie id").setSortable(true);
         grid.addColumn(Movie::getMovieTitle).setHeader("Title").setSortable(true);
         grid.addColumn(Movie::getMovieYear).setHeader("Release date").setSortable(true);
-        grid.addColumn(Movie::getMovieCollections).setHeader("User collections");
+        grid.addColumn(movie -> movie.getMovieCollections().size()).setHeader("User collections");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
                 editMovie(event.getValue()));
     }
 
     private com.vaadin.flow.component.Component getToolbar() {
-        filterText.setPlaceholder("Filter by name...");
+        filterText.setPlaceholder("Filter by title...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());

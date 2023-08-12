@@ -54,14 +54,14 @@ public class SongsView extends VerticalLayout {
         grid.addColumn(Song::getSongId).setHeader("Song id").setSortable(true);
         grid.addColumn(Song::getSongAuthor).setHeader("Artist").setSortable(true);
         grid.addColumn(Song::getSongTitle).setHeader("Title").setSortable(true);
-        grid.addColumn(Song::getSongCollections).setHeader("User collections");
+        grid.addColumn(song -> song.getSongCollections().size()).setHeader("User collections");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
                 editSong(event.getValue()));
     }
 
     private com.vaadin.flow.component.Component getToolbar() {
-        filterText.setPlaceholder("Filter by name...");
+        filterText.setPlaceholder("Filter by title...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
