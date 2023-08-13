@@ -5,6 +5,7 @@ import com.media_collection.frontend.data.service.BackendService;
 import com.media_collection.frontend.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -12,6 +13,8 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 @Route(value = "movie_collections", layout = MainLayout.class)
 @PageTitle("Movie Collections List")
@@ -50,11 +53,14 @@ public class MovieCollectionsView extends VerticalLayout {
 
     private void configureGrid() {
         grid.addClassNames("movieCollection-grid");
+        grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT);
         grid.setSizeFull();
         grid.addColumn(MovieCollection::getMovieCollectionId).setHeader("Movie collection id").setSortable(true);
         grid.addColumn(MovieCollection::getUserId).setHeader("User id").setSortable(true);
         grid.addColumn(MovieCollection::getMovieCollectionName).setHeader("Movie collection name").setSortable(true);
-        grid.addColumn(MovieCollection::getMovies).setHeader("Movies in collection");
+        grid.addColumn(movieCollection -> movieCollection.getMovies().stream()
+                .map(service::mapMovieIdToTitle).collect(Collectors.joining("; ")))
+                .setHeader("Movies in collection");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
                 editMovieCollection(event.getValue()));

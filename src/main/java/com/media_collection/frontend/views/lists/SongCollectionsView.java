@@ -5,6 +5,7 @@ import com.media_collection.frontend.data.service.BackendService;
 import com.media_collection.frontend.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -12,6 +13,8 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 @Route(value = "song_collections", layout = MainLayout.class)
 @PageTitle("Song Collections List")
@@ -50,11 +53,14 @@ public class SongCollectionsView extends VerticalLayout {
 
     private void configureGrid() {
         grid.addClassNames("songCollection-grid");
+        grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT);
         grid.setSizeFull();
         grid.addColumn(SongCollection::getSongCollectionId).setHeader("Song collection id").setSortable(true);
         grid.addColumn(SongCollection::getUserId).setHeader("User id").setSortable(true);
         grid.addColumn(SongCollection::getSongCollectionName).setHeader("Song collection name").setSortable(true);
-        grid.addColumn(SongCollection::getSongs).setHeader("Songs in collection");
+        grid.addColumn(songCollection -> songCollection.getSongs().stream()
+                .map(service::mapSongIdToTitle).collect(Collectors.joining("; ")))
+                .setHeader("Songs in collection");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
                 editSongCollection(event.getValue()));

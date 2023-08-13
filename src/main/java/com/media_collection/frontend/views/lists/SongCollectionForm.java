@@ -1,5 +1,6 @@
 package com.media_collection.frontend.views.lists;
 
+import com.media_collection.frontend.data.domain.Song;
 import com.media_collection.frontend.data.domain.SongCollection;
 import com.media_collection.frontend.data.domain.User;
 import com.media_collection.frontend.data.service.BackendService;
@@ -7,6 +8,7 @@ import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -20,6 +22,7 @@ public class SongCollectionForm extends FormLayout {
     TextField songCollectionId = new TextField("Song collection id");
     ComboBox<Long> userId = new ComboBox<>("User id");
     TextField songCollectionName = new TextField("Song collection name");
+    MultiSelectComboBox<Long> songs = new MultiSelectComboBox<>("Songs in collection: ");
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button close = new Button("Cancel");
@@ -31,7 +34,9 @@ public class SongCollectionForm extends FormLayout {
         songCollectionId.setReadOnly(true);
         userId.setItems(backendService.getUserCache().stream().map(User::getUserId).toList());
         userId.setItemLabelGenerator((ItemLabelGenerator<Long>) backendService::mapUserIdToName);
-        add(songCollectionId, userId, songCollectionName, createButtonsLayout());
+        songs.setItems(backendService.getSongs().stream().map(Song::getSongId).toList());
+        songs.setItemLabelGenerator((ItemLabelGenerator<Long>) backendService::mapSongIdToTitle);
+        add(songCollectionId, userId, songCollectionName, songs, createButtonsLayout());
     }
 
     public void setSongCollection(SongCollection songCollection) {

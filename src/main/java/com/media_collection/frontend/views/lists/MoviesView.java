@@ -5,6 +5,7 @@ import com.media_collection.frontend.data.service.BackendService;
 import com.media_collection.frontend.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -50,6 +51,7 @@ public class MoviesView extends VerticalLayout {
 
     private void configureGrid() {
         grid.addClassNames("movie-grid");
+        grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT);
         grid.setSizeFull();
         grid.addColumn(Movie::getMovieId).setHeader("Movie id").setSortable(true);
         grid.addColumn(Movie::getMovieTitle).setHeader("Title").setSortable(true);

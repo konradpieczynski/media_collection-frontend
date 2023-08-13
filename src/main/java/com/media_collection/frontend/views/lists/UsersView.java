@@ -5,6 +5,7 @@ import com.media_collection.frontend.data.service.BackendService;
 import com.media_collection.frontend.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -50,13 +51,14 @@ public class UsersView extends VerticalLayout {
 
     private void configureGrid() {
         grid.addClassNames("user-grid");
+        grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT);
         grid.setSizeFull();
         grid.addColumn(User::getUserId).setHeader("User id").setSortable(true);
         grid.addColumn(User::getUserName).setHeader("User name").setSortable(true);
         grid.addColumn(user -> user.getSuggestions().getType()).setHeader("Suggestions type").setSortable(true);
         grid.addColumn(User::getSuggestions).setHeader("Suggested");
-        grid.addColumn(User::getSongCollectionList).setHeader("Song collections");
-        grid.addColumn(User::getMovieCollectionList).setHeader("Movie collections");
+        grid.addColumn(user -> user.getSongCollectionList().size()).setHeader("Song collections").setSortable(true);
+        grid.addColumn(user -> user.getMovieCollectionList().size()).setHeader("Movie collections").setSortable(true);
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
                 editUser(event.getValue()));

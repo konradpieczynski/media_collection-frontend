@@ -1,12 +1,14 @@
 package com.media_collection.frontend.views.lists;
 
 import com.media_collection.frontend.data.domain.MovieCollection;
+import com.media_collection.frontend.data.domain.Movie;
 import com.media_collection.frontend.data.domain.User;
 import com.media_collection.frontend.data.service.BackendService;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -21,6 +23,7 @@ public class MovieCollectionForm extends FormLayout {
     TextField movieCollectionId = new TextField("Movie collection id");
     ComboBox<Long> userId = new ComboBox<>("User id");
     TextField movieCollectionName = new TextField("Movie collection name");
+    MultiSelectComboBox<Long> movies = new MultiSelectComboBox<>("Movie in collection: ");
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button close = new Button("Cancel");
@@ -32,7 +35,9 @@ public class MovieCollectionForm extends FormLayout {
         movieCollectionId.setReadOnly(true);
         userId.setItems(backendService.getUserCache().stream().map(User::getUserId).toList());
         userId.setItemLabelGenerator((ItemLabelGenerator<Long>) backendService::mapUserIdToName);
-        add(movieCollectionId, userId, movieCollectionName, createButtonsLayout());
+        movies.setItems(backendService.getMovies().stream().map(Movie::getMovieId).toList());
+        movies.setItemLabelGenerator((ItemLabelGenerator<Long>) backendService::mapMovieIdToTitle);
+        add(movieCollectionId, userId, movieCollectionName, movies, createButtonsLayout());
     }
 
     public void setMovieCollection(MovieCollection movieCollection) {
