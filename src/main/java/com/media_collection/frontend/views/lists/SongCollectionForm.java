@@ -1,12 +1,12 @@
 package com.media_collection.frontend.views.lists;
 
 import com.media_collection.frontend.data.domain.SongCollection;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.ComponentEvent;
-import com.vaadin.flow.component.ComponentEventListener;
-import com.vaadin.flow.component.Key;
+import com.media_collection.frontend.data.domain.User;
+import com.media_collection.frontend.data.service.BackendService;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -17,19 +17,20 @@ import com.vaadin.flow.shared.Registration;
 import java.util.List;
 
 public class SongCollectionForm extends FormLayout {
-
     TextField songCollectionId = new TextField("Song collection id");
-    TextField userId = new TextField("User id");
+    ComboBox<Long> userId = new ComboBox<>("User id");
     TextField songCollectionName = new TextField("Song collection name");
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button close = new Button("Cancel");
     Binder<SongCollection> binder = new BeanValidationBinder<>(SongCollection.class);
 
-    public SongCollectionForm(List<SongCollection> songCollections) {
+    public SongCollectionForm(List<SongCollection> songCollections, BackendService backendService) {
         addClassName("songCollection-form");
         binder.bindInstanceFields(this);
         songCollectionId.setReadOnly(true);
+        userId.setItems(backendService.getUserCache().stream().map(User::getUserId).toList());
+        userId.setItemLabelGenerator((ItemLabelGenerator<Long>) backendService::mapUserIdToName);
         add(songCollectionId, userId, songCollectionName, createButtonsLayout());
     }
 

@@ -41,7 +41,7 @@ public class SongCollectionsView extends VerticalLayout {
         return content;
     }
     private void configureForm() {
-        form = new SongCollectionForm(service.findAllSongCollections(filterText.getValue()));
+        form = new SongCollectionForm(service.findAllSongCollections(filterText.getValue()), service);
         form.setWidth("25em");
         form.addSaveListener(this::saveSongCollection);
         form.addDeleteListener(this::deleteSongCollection);

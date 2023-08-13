@@ -54,7 +54,7 @@ public class MoviesView extends VerticalLayout {
         grid.addColumn(Movie::getMovieId).setHeader("Movie id").setSortable(true);
         grid.addColumn(Movie::getMovieTitle).setHeader("Title").setSortable(true);
         grid.addColumn(Movie::getMovieYear).setHeader("Release date").setSortable(true);
-        grid.addColumn(movie -> movie.getMovieCollections().size()).setHeader("User collections");
+        grid.addColumn(movie -> movie.getMovieCollections().size()).setHeader("User collections").setSortable(true);
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
                 editMovie(event.getValue()));

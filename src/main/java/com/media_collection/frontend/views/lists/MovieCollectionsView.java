@@ -41,7 +41,7 @@ public class MovieCollectionsView extends VerticalLayout {
         return content;
     }
     private void configureForm() {
-        form = new MovieCollectionForm(service.findAllMovieCollections(filterText.getValue()));
+        form = new MovieCollectionForm(service.findAllMovieCollections(filterText.getValue()), service);
         form.setWidth("25em");
         form.addSaveListener(this::saveMovieCollection);
         form.addDeleteListener(this::deleteMovieCollection);

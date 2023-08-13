@@ -54,7 +54,7 @@ public class SongsView extends VerticalLayout {
         grid.addColumn(Song::getSongId).setHeader("Song id").setSortable(true);
         grid.addColumn(Song::getSongAuthor).setHeader("Artist").setSortable(true);
         grid.addColumn(Song::getSongTitle).setHeader("Title").setSortable(true);
-        grid.addColumn(song -> song.getSongCollections().size()).setHeader("User collections");
+        grid.addColumn(song -> song.getSongCollections().size()).setHeader("User collections").setSortable(true);
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
                 editSong(event.getValue()));

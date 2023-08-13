@@ -272,4 +272,49 @@ public class BackendService {
                 .block();
         updateCache();
     }
+    public String mapUserIdToName(Long id){
+        List<User> userList = getUserCache();
+        for (User user: userList
+        ) {
+            if (user.getUserId().equals(id)) return
+            "Id: "+ user.getUserId() + ", name: " + user.getUserName();
+        }
+        return "No user";
+    }
+    public String mapSongIdToTitle(Long id){
+        List<Song> songList = getSongCache();
+        for (Song song: songList
+        ) {
+            if (song.getSongId().equals(id)) return
+                    "Id: "+ song.getSongId() + ", title: " + song.getSongTitle();
+        }
+        return "No song";
+    }
+    public String mapMovieIdToTitle(Long id){
+        List<Movie> movieList = getMovieCache();
+        for (Movie movie: movieList
+        ) {
+            if (movie.getMovieId().equals(id)) return
+                    "Id: "+ movie.getMovieId() + ", title: " + movie.getMovieTitle();
+        }
+        return "No movie";
+    }
+    public String mapSongCollectionIdToName(Long id){
+        List<SongCollection> songCollectionList = getSongCollectionCache();
+        for (SongCollection songCollection: songCollectionList
+        ) {
+            if (songCollection.getSongCollectionId().equals(id)) return
+                    "Id: "+ songCollection.getSongCollectionId() + ", name: " + songCollection.getSongCollectionName();
+        }
+        return "No songCollection";
+    }
+    public String mapMovieCollectionIdToName(Long id){
+        List<MovieCollection> movieCollectionList = getMovieCollectionCache();
+        for (MovieCollection movieCollection: movieCollectionList
+        ) {
+            if (movieCollection.getMovieCollectionId().equals(id)) return
+                    "Id: "+ movieCollection.getMovieCollectionId() + ", name: " + movieCollection.getMovieCollectionName();
+        }
+        return "No movieCollection";
+    }
 }

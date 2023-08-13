@@ -1,12 +1,12 @@
 package com.media_collection.frontend.views.lists;
 
 import com.media_collection.frontend.data.domain.MovieCollection;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.ComponentEvent;
-import com.vaadin.flow.component.ComponentEventListener;
-import com.vaadin.flow.component.Key;
+import com.media_collection.frontend.data.domain.User;
+import com.media_collection.frontend.data.service.BackendService;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -19,17 +19,19 @@ import java.util.List;
 public class MovieCollectionForm extends FormLayout {
 
     TextField movieCollectionId = new TextField("Movie collection id");
-    TextField userId = new TextField("User id");
+    ComboBox<Long> userId = new ComboBox<>("User id");
     TextField movieCollectionName = new TextField("Movie collection name");
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button close = new Button("Cancel");
     Binder<MovieCollection> binder = new BeanValidationBinder<>(MovieCollection.class);
 
-    public MovieCollectionForm(List<MovieCollection> movieCollections) {
+    public MovieCollectionForm(List<MovieCollection> movieCollections, BackendService backendService) {
         addClassName("movieCollection-form");
         binder.bindInstanceFields(this);
         movieCollectionId.setReadOnly(true);
+        userId.setItems(backendService.getUserCache().stream().map(User::getUserId).toList());
+        userId.setItemLabelGenerator((ItemLabelGenerator<Long>) backendService::mapUserIdToName);
         add(movieCollectionId, userId, movieCollectionName, createButtonsLayout());
     }
 
