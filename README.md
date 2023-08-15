@@ -10,10 +10,10 @@ Frontend application will crash if backend application is not running.
 BACKEND_URL = "link in format: url:port/v1"
 <br>
 <h2>Screenshots:</h2>
-<p align="center"><img src="/screenshots/1.png" width=800></p>
-<p align="center"><img src="/screenshots/2.png" width=800></p>
-<p align="center"><img src="/screenshots/3.png" width=800></p>
-<p align="center"><img src="/screenshots/4.png" width=800></p>
-<p align="center"><img src="/screenshots/5.png" width=800></p>
-<p align="center"><img src="/screenshots/6.png" width=800></p>
-<p align="center"><img src="/screenshots/7.png" width=800></p>
+<p align="center"><img src="/Screenshots/1.png" width=800></p>
+<p align="center"><img src="/Screenshots/2.png" width=800></p>
+<p align="center"><img src="/Screenshots/3.png" width=800></p>
+<p align="center"><img src="/Screenshots/4.png" width=800></p>
+<p align="center"><img src="/Screenshots/5.png" width=800></p>
+<p align="center"><img src="/Screenshots/6.png" width=800></p>
+<p align="center"><img src="/Screenshots/7.png" width=800></p>
